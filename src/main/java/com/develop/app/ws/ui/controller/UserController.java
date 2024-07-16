@@ -1,5 +1,6 @@
 package com.develop.app.ws.ui.controller;
 
+import com.develop.app.ws.ui.model.request.UserDetailsRequestModel;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
