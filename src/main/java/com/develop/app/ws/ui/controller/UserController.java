@@ -1,6 +1,7 @@
 package com.develop.app.ws.ui.controller;
 
 import com.develop.app.ws.ui.model.request.UserDetailsRequestModel;
+import com.develop.app.ws.ui.model.response.UserResponseModel;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +19,8 @@ public class UserController {
     }
 
     @PostMapping
-    public String createUser(@RequestBody UserDetailsRequestModel userDetails) {
-        return "create user was called";
+    public UserResponseModel createUser(@RequestBody UserDetailsRequestModel userDetails) {
+        return null;
     }
 
     @PutMapping
