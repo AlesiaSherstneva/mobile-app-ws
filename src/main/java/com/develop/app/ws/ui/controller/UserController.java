@@ -1,7 +1,9 @@
 package com.develop.app.ws.ui.controller;
 
+import com.develop.app.ws.shared.dto.UserDto;
 import com.develop.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.develop.app.ws.ui.model.response.UserResponseModel;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +22,15 @@ public class UserController {
 
     @PostMapping
     public UserResponseModel createUser(@RequestBody UserDetailsRequestModel userDetails) {
-        return null;
+        UserResponseModel response = new UserResponseModel();
+
+        UserDto userDto = new UserDto();
+        BeanUtils.copyProperties(userDetails, userDto);
+
+        UserDto createdUser = userService.createUser(userDto);
+        BeanUtils.copyProperties(createdUser, response);
+
+        return response;
     }
 
     @PutMapping
