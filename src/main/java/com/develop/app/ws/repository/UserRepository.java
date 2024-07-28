@@ -4,4 +4,5 @@ import com.develop.app.ws.io.entity.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<UserEntity, Long> {
+    UserEntity findUserEntityByEmail(String email);
 }
