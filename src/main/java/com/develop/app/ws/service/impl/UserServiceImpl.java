@@ -3,6 +3,7 @@ package com.develop.app.ws.service.impl;
 import com.develop.app.ws.io.entity.UserEntity;
 import com.develop.app.ws.repository.UserRepository;
 import com.develop.app.ws.service.UserService;
+import com.develop.app.ws.shared.Utils;
 import com.develop.app.ws.shared.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final Utils utils;
 
     @Override
     public UserDto createUser(UserDto user) {
@@ -23,7 +25,9 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(user, userEntity);
 
         userEntity.setEncryptedPassword("test");
-        userEntity.setUserId("testUserId");
+
+        String publicUserId = utils.generateUserId(30);
+        userEntity.setUserId(publicUserId);
 
         UserEntity storedUserDetails = userRepository.save(userEntity);
 
