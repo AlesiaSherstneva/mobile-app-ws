@@ -7,6 +7,7 @@ import com.develop.app.ws.shared.Utils;
 import com.develop.app.ws.shared.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final Utils utils;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public UserDto createUser(UserDto user) {
@@ -24,7 +26,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(user, userEntity);
 
-        userEntity.setEncryptedPassword("test");
+        userEntity.setEncryptedPassword(passwordEncoder.encode(user.getPassword()));
 
         String publicUserId = utils.generateUserId(30);
         userEntity.setUserId(publicUserId);
