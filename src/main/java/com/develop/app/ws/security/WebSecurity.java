@@ -31,7 +31,7 @@ public class WebSecurity {
         http.authenticationManager(authManager);
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers(HttpMethod.POST, "/users").permitAll()
+                        request.requestMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
                                 .anyRequest().authenticated()
                 );
 
