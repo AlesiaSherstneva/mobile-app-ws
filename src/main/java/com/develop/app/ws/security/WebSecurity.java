@@ -33,7 +33,8 @@ public class WebSecurity {
                 .authorizeHttpRequests(request ->
                         request.requestMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
                                 .anyRequest().authenticated()
-                );
+                )
+                .addFilter(new AuthenticationFilter(authManager));
 
         return http.build();
     }
