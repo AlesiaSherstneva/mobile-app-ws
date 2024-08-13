@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -37,7 +38,11 @@ public class WebSecurity {
                         request.requestMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
                                 .anyRequest().authenticated()
                 )
-                .addFilter(authFilter);
+                .addFilter(authFilter)
+                .addFilter(new AuthorizationFilter(authManager))
+                .sessionManagement(smc ->
+                        smc.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                );
 
         return http.build();
     }
