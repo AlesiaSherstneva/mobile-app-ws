@@ -28,13 +28,16 @@ public class WebSecurity {
                 .passwordEncoder(passwordEncoder);
         AuthenticationManager authManager = authManagerBuilder.build();
 
+        AuthenticationFilter authFilter = new AuthenticationFilter(authManager);
+        authFilter.setFilterProcessesUrl("/users/login");
+
         http.authenticationManager(authManager);
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->
                         request.requestMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
                                 .anyRequest().authenticated()
                 )
-                .addFilter(new AuthenticationFilter(authManager));
+                .addFilter(authFilter);
 
         return http.build();
     }
