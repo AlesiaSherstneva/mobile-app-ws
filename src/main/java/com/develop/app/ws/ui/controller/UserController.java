@@ -6,6 +6,7 @@ import com.develop.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.develop.app.ws.ui.model.response.UserResponseModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
     public UserResponseModel getUser(@PathVariable String id) {
         UserResponseModel response = new UserResponseModel();
 
