@@ -23,7 +23,9 @@ public class UserController {
     private final UserService userService;
 
     // @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
-    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @GetMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public UserResponseModel getUser(@PathVariable String id) {
         UserResponseModel response = new UserResponseModel();
 
