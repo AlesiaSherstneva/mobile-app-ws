@@ -1,10 +1,12 @@
 package com.develop.app.ws.service.impl;
 
+import com.develop.app.ws.exception.UserServiceException;
 import com.develop.app.ws.io.entity.UserEntity;
 import com.develop.app.ws.repository.UserRepository;
 import com.develop.app.ws.service.UserService;
 import com.develop.app.ws.shared.Utils;
 import com.develop.app.ws.shared.dto.UserDto;
+import com.develop.app.ws.ui.model.response.ErrorMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.userdetails.User;
@@ -74,6 +76,23 @@ public class UserServiceImpl implements UserService {
 
         UserDto returnValue = new UserDto();
         BeanUtils.copyProperties(userEntity, returnValue);
+        return returnValue;
+    }
+
+    @Override
+    public UserDto updateUser(String userId, UserDto userDto) {
+        UserEntity userEntity = userRepository.findByUserId(userId);
+        if (userEntity == null) {
+            throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+        }
+
+        userEntity.setFirstName(userDto.getFirstName());
+        userEntity.setLastName(userDto.getLastName());
+
+        UserDto returnValue = new UserDto();
+        UserEntity updatedUser = userRepository.save(userEntity);
+        BeanUtils.copyProperties(updatedUser, returnValue);
+
         return returnValue;
     }
 }
