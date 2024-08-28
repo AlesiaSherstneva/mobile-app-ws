@@ -4,6 +4,7 @@ import com.develop.app.ws.service.UserService;
 import com.develop.app.ws.shared.dto.UserDto;
 import com.develop.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.develop.app.ws.ui.model.response.OperationStatusModel;
+import com.develop.app.ws.ui.model.response.ResponseOperationStatus;
 import com.develop.app.ws.ui.model.response.UserResponseModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -62,8 +63,9 @@ public class UserController {
     @DeleteMapping(path = "/{id}")
     public OperationStatusModel deleteUser(@PathVariable String id) {
         OperationStatusModel response = new OperationStatusModel();
-        response.setOperationName("DELETE");
-        response.setOperationResult("SUCCESS");
+        response.setOperationName(RequestOperationName.DELETE.name());
+        response.setOperationResult(ResponseOperationStatus.SUCCESS.name());
+
         return response;
     }
 }
