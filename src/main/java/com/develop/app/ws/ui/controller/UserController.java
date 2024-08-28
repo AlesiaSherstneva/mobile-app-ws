@@ -3,6 +3,7 @@ package com.develop.app.ws.ui.controller;
 import com.develop.app.ws.service.UserService;
 import com.develop.app.ws.shared.dto.UserDto;
 import com.develop.app.ws.ui.model.request.UserDetailsRequestModel;
+import com.develop.app.ws.ui.model.response.OperationStatusModel;
 import com.develop.app.ws.ui.model.response.UserResponseModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -58,8 +59,11 @@ public class UserController {
         return response;
     }
 
-    @DeleteMapping
-    public String deleteUser() {
-        return "delete user was called";
+    @DeleteMapping(path = "/{id}")
+    public OperationStatusModel deleteUser(@PathVariable String id) {
+        OperationStatusModel response = new OperationStatusModel();
+        response.setOperationName("DELETE");
+        response.setOperationResult("SUCCESS");
+        return response;
     }
 }
