@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserByUserId(String userId) {
         UserEntity userEntity = userRepository.findByUserId(userId);
         if (userEntity == null) {
-            throw new UsernameNotFoundException(userId);
+            throw new UsernameNotFoundException(String.format("User with id %s not found", userId));
         }
 
         UserDto returnValue = new UserDto();
