@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("users")
@@ -29,6 +33,21 @@ public class UserController {
 
         UserDto userDto = userService.getUserByUserId(id);
         BeanUtils.copyProperties(userDto, response);
+
+        return response;
+    }
+
+    @GetMapping
+    public List<UserResponseModel> getUsers(@RequestParam(value = "page", defaultValue = "1") int page,
+                                            @RequestParam(value = "limit", defaultValue = "25") int limit) {
+        List<UserResponseModel> response = new ArrayList<>();
+
+        List<UserDto> users = userService.getUsers(page, limit);
+        for(UserDto user: users) {
+            UserResponseModel userResponse = new UserResponseModel();
+            BeanUtils.copyProperties(user, userResponse);
+            response.add(userResponse);
+        }
 
         return response;
     }
@@ -48,7 +67,7 @@ public class UserController {
 
     @PutMapping(path = "/{id}")
     public UserResponseModel updateUser(@PathVariable String id,
-                             @RequestBody UserDetailsRequestModel userDetails) {
+                                        @RequestBody UserDetailsRequestModel userDetails) {
         UserResponseModel response = new UserResponseModel();
 
         UserDto userDto = new UserDto();
