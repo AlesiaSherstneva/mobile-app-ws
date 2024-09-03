@@ -9,12 +9,15 @@ import com.develop.app.ws.shared.dto.UserDto;
 import com.develop.app.ws.ui.model.response.ErrorMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -76,6 +79,21 @@ public class UserServiceImpl implements UserService {
 
         UserDto returnValue = new UserDto();
         BeanUtils.copyProperties(userEntity, returnValue);
+        return returnValue;
+    }
+
+    @Override
+    public List<UserDto> getUsers(int page, int limit) {
+        List<UserDto> returnValue = new ArrayList<>();
+
+        Pageable pageableRequest = PageRequest.of(page, limit);
+        List<UserEntity> users = userRepository.findAll(pageableRequest).getContent();
+        for(UserEntity userEntity: users) {
+            UserDto userDto = new UserDto();
+            BeanUtils.copyProperties(userDto, userEntity);
+            returnValue.add(userDto);
+        }
+
         return returnValue;
     }
 
