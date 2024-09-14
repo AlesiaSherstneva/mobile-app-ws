@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserResponseModel> getUsers(@RequestParam(value = "page", defaultValue = "1") int page,
+    public List<UserResponseModel> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,
                                             @RequestParam(value = "limit", defaultValue = "25") int limit) {
         List<UserResponseModel> response = new ArrayList<>();
 

@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
         List<UserEntity> users = userRepository.findAll(pageableRequest).getContent();
         for(UserEntity userEntity: users) {
             UserDto userDto = new UserDto();
-            BeanUtils.copyProperties(userDto, userEntity);
+            BeanUtils.copyProperties(userEntity, userDto);
             returnValue.add(userDto);
         }
 
