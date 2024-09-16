@@ -7,6 +7,7 @@ import com.develop.app.ws.ui.model.response.OperationStatusModel;
 import com.develop.app.ws.ui.model.response.ResponseOperationStatus;
 import com.develop.app.ws.ui.model.response.UserResponseModel;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,8 +57,8 @@ public class UserController {
     public UserResponseModel createUser(@RequestBody UserDetailsRequestModel userDetails) {
         UserResponseModel response = new UserResponseModel();
 
-        UserDto userDto = new UserDto();
-        BeanUtils.copyProperties(userDetails, userDto);
+        ModelMapper modelMapper = new ModelMapper();
+        UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
         UserDto createdUser = userService.createUser(userDto);
         BeanUtils.copyProperties(createdUser, response);
