@@ -44,7 +44,7 @@ public class UserController {
         List<UserResponseModel> response = new ArrayList<>();
 
         List<UserDto> users = userService.getUsers(page, limit);
-        for(UserDto user: users) {
+        for (UserDto user : users) {
             UserResponseModel userResponse = new UserResponseModel();
             BeanUtils.copyProperties(user, userResponse);
             response.add(userResponse);
@@ -55,13 +55,13 @@ public class UserController {
 
     @PostMapping
     public UserResponseModel createUser(@RequestBody UserDetailsRequestModel userDetails) {
-        UserResponseModel response = new UserResponseModel();
+        UserResponseModel response;
 
         ModelMapper modelMapper = new ModelMapper();
         UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
         UserDto createdUser = userService.createUser(userDto);
-        BeanUtils.copyProperties(createdUser, response);
+        response = modelMapper.map(createdUser, UserResponseModel.class);
 
         return response;
     }
