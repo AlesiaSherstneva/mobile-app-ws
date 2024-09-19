@@ -1,6 +1,5 @@
 package com.develop.app.ws.io.entity;
 
-import com.develop.app.ws.shared.dto.UserDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -47,5 +46,5 @@ public class AddressEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "users_id")
-    private UserDto userDetails;
+    private UserEntity userDetails;
 }
