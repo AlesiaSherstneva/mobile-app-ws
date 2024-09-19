@@ -5,6 +5,7 @@ import com.develop.app.ws.io.entity.UserEntity;
 import com.develop.app.ws.repository.UserRepository;
 import com.develop.app.ws.service.UserService;
 import com.develop.app.ws.shared.Utils;
+import com.develop.app.ws.shared.dto.AddressDto;
 import com.develop.app.ws.shared.dto.UserDto;
 import com.develop.app.ws.ui.model.response.ErrorMessages;
 import lombok.RequiredArgsConstructor;
@@ -34,12 +35,19 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Record already exists");
         }
 
+        for (int i = 0; i < user.getAddresses().size(); i++) {
+            AddressDto addressDto = user.getAddresses().get(i);
+            addressDto.setUserDetails(user);
+            addressDto.setAddressId(utils.generateEntitiesPublicId(30));
+            user.getAddresses().set(i, addressDto);
+        }
+
         ModelMapper modelMapper = new ModelMapper();
         UserEntity userEntity = modelMapper.map(user, UserEntity.class);
 
         userEntity.setEncryptedPassword(passwordEncoder.encode(user.getPassword()));
 
-        String publicUserId = utils.generateUserId(30);
+        String publicUserId = utils.generateEntitiesPublicId(30);
         userEntity.setUserId(publicUserId);
 
         UserEntity storedUserDetails = userRepository.save(userEntity);
