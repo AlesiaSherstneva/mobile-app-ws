@@ -1,13 +1,16 @@
 package com.develop.app.ws.ui.controller;
 
 import com.develop.app.ws.service.UserService;
+import com.develop.app.ws.shared.dto.AddressDto;
 import com.develop.app.ws.shared.dto.UserDto;
 import com.develop.app.ws.ui.model.request.UserDetailsRequestModel;
+import com.develop.app.ws.ui.model.response.AddressResponseModel;
 import com.develop.app.ws.ui.model.response.OperationStatusModel;
 import com.develop.app.ws.ui.model.response.ResponseOperationStatus;
 import com.develop.app.ws.ui.model.response.UserResponseModel;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +52,20 @@ public class UserController {
             UserResponseModel userResponse = new UserResponseModel();
             BeanUtils.copyProperties(user, userResponse);
             response.add(userResponse);
+        }
+
+        return response;
+    }
+
+    @GetMapping(path = "/{id}/addresses")
+    public List<AddressResponseModel> getUserAddresses(@PathVariable String id) {
+        List<AddressResponseModel> response = new ArrayList<>();
+
+        List<AddressDto> addresses = addressService.getAddresses(id);
+        if (addresses != null && !addresses.isEmpty()) {
+            Type listType = new TypeToken<List<AddressResponseModel>>() {
+            }.getType();
+            response = new ModelMapper().map(addresses, listType);
         }
 
         return response;
