@@ -1,5 +1,6 @@
 package com.develop.app.ws.ui.controller;
 
+import com.develop.app.ws.service.AddressService;
 import com.develop.app.ws.service.UserService;
 import com.develop.app.ws.shared.dto.AddressDto;
 import com.develop.app.ws.shared.dto.UserDto;
@@ -31,6 +32,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final AddressService addressService;
 
     @GetMapping("/{id}")
     public UserResponseModel getUser(@PathVariable String id) {
