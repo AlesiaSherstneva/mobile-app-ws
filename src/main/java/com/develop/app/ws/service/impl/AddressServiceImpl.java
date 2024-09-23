@@ -2,6 +2,7 @@ package com.develop.app.ws.service.impl;
 
 import com.develop.app.ws.io.entity.AddressEntity;
 import com.develop.app.ws.io.entity.UserEntity;
+import com.develop.app.ws.repository.AddressRepository;
 import com.develop.app.ws.repository.UserRepository;
 import com.develop.app.ws.service.AddressService;
 import com.develop.app.ws.shared.dto.AddressDto;
