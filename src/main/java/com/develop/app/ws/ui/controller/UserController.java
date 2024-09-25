@@ -73,6 +73,15 @@ public class UserController {
         return response;
     }
 
+    @GetMapping(path = "/{userId}/addresses/{addressId}")
+    public AddressResponseModel getUserAddress(@PathVariable String addressId) {
+        AddressDto addressDto = addressService.getAddress(addressId);
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(addressDto, AddressResponseModel.class);
+    }
+
     @PostMapping
     public UserResponseModel createUser(@RequestBody UserDetailsRequestModel userDetails) {
         UserResponseModel response;
