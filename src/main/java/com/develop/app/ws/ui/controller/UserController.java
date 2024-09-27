@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -74,12 +76,17 @@ public class UserController {
     }
 
     @GetMapping(path = "/{userId}/addresses/{addressId}")
-    public AddressResponseModel getUserAddress(@PathVariable String addressId) {
+    public AddressResponseModel getUserAddress(@PathVariable String userId,
+                                               @PathVariable String addressId) {
         AddressDto addressDto = addressService.getAddress(addressId);
 
         ModelMapper modelMapper = new ModelMapper();
+        AddressResponseModel response = modelMapper.map(addressDto, AddressResponseModel.class);
 
-        return modelMapper.map(addressDto, AddressResponseModel.class);
+        Link userLink = WebMvcLinkBuilder.linkTo(UserController.class).slash(userId).withRel("user");
+        response.add(userLink);
+
+        return response;
     }
 
     @PostMapping
