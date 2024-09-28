@@ -83,8 +83,18 @@ public class UserController {
         ModelMapper modelMapper = new ModelMapper();
         AddressResponseModel response = modelMapper.map(addressDto, AddressResponseModel.class);
 
-        Link userLink = WebMvcLinkBuilder.linkTo(UserController.class).slash(userId).withRel("user");
+        Link userLink = WebMvcLinkBuilder
+                .linkTo(UserController.class)
+                .slash(userId)
+                .withRel("user");
+        Link userAddressesLink = WebMvcLinkBuilder
+                .linkTo(UserController.class)
+                .slash(userId)
+                .slash("addresses")
+                .withRel("addresses");
+
         response.add(userLink);
+        response.add(userAddressesLink);
 
         return response;
     }
