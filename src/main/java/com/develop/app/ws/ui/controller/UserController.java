@@ -92,9 +92,16 @@ public class UserController {
                 .slash(userId)
                 .slash("addresses")
                 .withRel("addresses");
+        Link selfLink = WebMvcLinkBuilder
+                .linkTo(UserController.class)
+                .slash(userId)
+                .slash("addresses")
+                .slash(addressId)
+                .withSelfRel();
 
         response.add(userLink);
         response.add(userAddressesLink);
+        response.add(selfLink);
 
         return response;
     }
