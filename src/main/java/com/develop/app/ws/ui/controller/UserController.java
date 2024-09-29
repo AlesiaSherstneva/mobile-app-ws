@@ -98,10 +98,7 @@ public class UserController {
                 .slash("addresses")
                 .slash(addressId)
                 .withSelfRel();
-
-        response.add(userLink);
-        response.add(userAddressesLink);
-        response.add(selfLink);
+        response.add(userLink, userAddressesLink, selfLink);
 
         return response;
     }
