@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -76,7 +77,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/{userId}/addresses/{addressId}")
-    public AddressResponseModel getUserAddress(@PathVariable String userId,
+    public EntityModel<AddressResponseModel> getUserAddress(@PathVariable String userId,
                                                @PathVariable String addressId) {
         AddressDto addressDto = addressService.getAddress(addressId);
 
@@ -98,9 +99,8 @@ public class UserController {
                 .slash("addresses")
                 .slash(addressId)
                 .withSelfRel();
-        response.add(userLink, userAddressesLink, selfLink);
 
-        return response;
+        return EntityModel.of(response, List.of(userLink, userAddressesLink, selfLink));
     }
 
     @PostMapping
