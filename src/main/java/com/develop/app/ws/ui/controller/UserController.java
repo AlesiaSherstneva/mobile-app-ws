@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -62,18 +63,26 @@ public class UserController {
         return response;
     }
 
-    @GetMapping(path = "/{id}/addresses")
-    public List<AddressResponseModel> getUserAddresses(@PathVariable String id) {
+    @GetMapping(path = "/{userId}/addresses")
+    public CollectionModel<AddressResponseModel> getUserAddresses(@PathVariable String userId) {
         List<AddressResponseModel> response = new ArrayList<>();
 
-        List<AddressDto> addresses = addressService.getAddresses(id);
+        List<AddressDto> addresses = addressService.getAddresses(userId);
         if (addresses != null && !addresses.isEmpty()) {
             Type listType = new TypeToken<List<AddressResponseModel>>() {
             }.getType();
             response = new ModelMapper().map(addresses, listType);
         }
 
-        return response;
+        Link userLink = WebMvcLinkBuilder
+                .linkTo(UserController.class)
+                .slash(userId)
+                .withRel("user");
+        Link selfLink = WebMvcLinkBuilder
+                .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUserAddresses(userId))
+                .withSelfRel();
+
+        return CollectionModel.of(response, List.of(userLink, selfLink));
     }
 
     @GetMapping(path = "/{userId}/addresses/{addressId}")
