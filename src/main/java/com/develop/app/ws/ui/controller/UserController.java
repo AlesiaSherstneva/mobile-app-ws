@@ -72,6 +72,13 @@ public class UserController {
             Type listType = new TypeToken<List<AddressResponseModel>>() {
             }.getType();
             response = new ModelMapper().map(addresses, listType);
+
+            for(AddressResponseModel model: response) {
+                Link selfLink = WebMvcLinkBuilder
+                        .linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUserAddress(userId, model.getAddressId()))
+                        .withSelfRel();
+                model.add(selfLink);
+            }
         }
 
         Link userLink = WebMvcLinkBuilder
