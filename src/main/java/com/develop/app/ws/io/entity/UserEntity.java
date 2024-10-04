@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @Setter
+@Builder
 public class UserEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 7101931848323927786L;
