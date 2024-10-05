@@ -8,9 +8,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -26,7 +28,7 @@ class UserServiceImplTest {
 
     @BeforeEach
     void setUp() {
-       autoCloseable = openMocks(this);
+        autoCloseable = openMocks(this);
     }
 
     @Test
@@ -53,6 +55,15 @@ class UserServiceImplTest {
 
         assertNotNull(userDtoResponse);
         assertEquals(userEntity.getFirstName(), userDtoResponse.getFirstName());
+    }
+
+    @Test
+    void getUserWhenUsernameNotFoundInDbTest() {
+        when(userRepository.findUserEntityByEmail(anyString())).thenReturn(null);
+
+        assertThrows(UsernameNotFoundException.class,
+                () -> userService.getUser("test@test.com")
+        );
     }
 
     @Test
