@@ -62,11 +62,29 @@ class UserServiceImplTest {
         when(passwordEncoder.encode(anyString())).thenReturn("someEncryptedPassword321");
         when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
 
-        AddressDto addressDto = new AddressDto();
-        addressDto.setType("shipping");
+        AddressDto shippingAddressDto = new AddressDto();
+        shippingAddressDto.setCity("Vancouver");
+        shippingAddressDto.setCountry("Canada");
+        shippingAddressDto.setPostalCode("ABC123");
+        shippingAddressDto.setStreetName("123 Street name");
+        shippingAddressDto.setType("shipping");
+
+        AddressDto billingAddressDto = new AddressDto();
+        billingAddressDto.setCity("Vancouver");
+        billingAddressDto.setCountry("Canada");
+        billingAddressDto.setPostalCode("ABC123");
+        billingAddressDto.setStreetName("123 Street name");
+        billingAddressDto.setType("billing");
+
         List<AddressDto> addresses = new ArrayList<>();
-        addresses.add(addressDto);
+        addresses.add(shippingAddressDto);
+        addresses.add(billingAddressDto);
+
         UserDto userDto = new UserDto();
+        userDto.setFirstName("Alesia");
+        userDto.setLastName("Sherstneva");
+        userDto.setPassword("12345678");
+        userDto.setEmail("test@test.com");
         userDto.setAddresses(addresses);
 
         UserDto createdUser = userService.createUser(userDto);
