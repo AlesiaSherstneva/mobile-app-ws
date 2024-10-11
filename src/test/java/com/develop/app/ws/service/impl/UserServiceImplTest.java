@@ -95,6 +95,30 @@ class UserServiceImplTest {
         assertNotNull(userEntity.getUserId());
     }
 
+    private List<AddressDto> getAddressesDto() {
+        AddressDto shippingAddressDto = AddressDto.builder()
+                .city("Vancouver")
+                .country("Canada")
+                .postalCode("ABC123")
+                .streetName("123 Street name")
+                .type("shipping")
+                .build();
+
+        AddressDto billingAddressDto = AddressDto.builder()
+                .city("Vancouver")
+                .country("Canada")
+                .postalCode("ABC123")
+                .streetName("123 Street name")
+                .type("billing")
+                .build();
+
+        List<AddressDto> addresses = new ArrayList<>();
+        addresses.add(shippingAddressDto);
+        addresses.add(billingAddressDto);
+
+        return addresses;
+    }
+
     @Test
     void loadUserByUsername() {
     }
