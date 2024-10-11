@@ -91,6 +91,8 @@ class UserServiceImplTest {
 
         assertNotNull(createdUser);
         assertEquals(userEntity.getFirstName(), createdUser.getFirstName());
+        assertEquals(userEntity.getLastName(), createdUser.getLastName());
+        assertNotNull(userEntity.getUserId());
     }
 
     @Test
