@@ -1,18 +1,23 @@
 package com.develop.app.ws.service.impl;
 
+import com.develop.app.ws.io.entity.AddressEntity;
 import com.develop.app.ws.io.entity.UserEntity;
 import com.develop.app.ws.repository.UserRepository;
 import com.develop.app.ws.shared.Utils;
 import com.develop.app.ws.shared.dto.AddressDto;
 import com.develop.app.ws.shared.dto.UserDto;
+import com.develop.app.ws.ui.model.response.AddressResponseModel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +57,7 @@ class UserServiceImplTest {
                 .lastName("Lastname")
                 .userId("someRandomUserId123")
                 .encryptedPassword("someEncryptedPassword321")
+                .addresses(getAddressesEntity())
                 .build();
     }
 
@@ -117,6 +123,14 @@ class UserServiceImplTest {
         addresses.add(billingAddressDto);
 
         return addresses;
+    }
+
+    private List<AddressEntity> getAddressesEntity() {
+        List<AddressDto> addresses = getAddressesDto();
+
+        Type listType = new TypeToken<List<AddressResponseModel>>() {
+        }.getType();
+        return new ModelMapper().map(addresses, listType);
     }
 
     @Test
