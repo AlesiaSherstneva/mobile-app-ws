@@ -27,6 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -83,6 +85,10 @@ class UserServiceImplTest {
         assertNotNull(userEntity.getUserId());
 
         assertEquals(userEntity.getAddresses().size(), userDto.getAddresses().size());
+
+        verify(utils, times(3)).generateEntitiesPublicId(anyInt());
+        verify(passwordEncoder, times(1)).encode(anyString());
+        verify(userRepository, times(1)).save(any(UserEntity.class));
     }
 
     private List<AddressDto> getAddressesDto() {
