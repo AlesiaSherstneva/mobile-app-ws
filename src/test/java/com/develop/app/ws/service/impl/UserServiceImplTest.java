@@ -1,5 +1,6 @@
 package com.develop.app.ws.service.impl;
 
+import com.develop.app.ws.exception.UserServiceException;
 import com.develop.app.ws.io.entity.AddressEntity;
 import com.develop.app.ws.io.entity.UserEntity;
 import com.develop.app.ws.repository.UserRepository;
@@ -121,6 +122,21 @@ class UserServiceImplTest {
         Type listType = new TypeToken<List<AddressResponseModel>>() {
         }.getType();
         return new ModelMapper().map(addresses, listType);
+    }
+
+    @Test
+    void createUserWhenEmailAlreadyExistsInDbTest() {
+        when(userRepository.findUserEntityByEmail(anyString())).thenReturn(userEntity);
+
+        UserDto userDto = new UserDto();
+        userDto.setFirstName("Alesia");
+        userDto.setLastName("Sherstneva");
+        userDto.setPassword("12345678");
+        userDto.setEmail("test@test.com");
+        userDto.setAddresses(getAddressesDto());
+
+        assertThrows(UserServiceException.class,
+                () -> userService.createUser(userDto));
     }
 
     @Test
