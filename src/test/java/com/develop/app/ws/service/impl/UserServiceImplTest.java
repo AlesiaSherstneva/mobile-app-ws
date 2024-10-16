@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -58,6 +59,7 @@ class UserServiceImplTest {
                 .id(1L)
                 .firstName("Firstname")
                 .lastName("Lastname")
+                .email("test@test.com")
                 .userId("someRandomUserId123")
                 .encryptedPassword("someEncryptedPassword321")
                 .addresses(getAddressesEntity())
@@ -141,6 +143,12 @@ class UserServiceImplTest {
 
     @Test
     void loadUserByUsername() {
+        when(userRepository.findUserEntityByEmail(anyString())).thenReturn(userEntity);
+
+        UserDetails user = userService.loadUserByUsername("test@test.com");
+
+        assertEquals(userEntity.getEmail(), user.getUsername());
+        assertEquals(userEntity.getEncryptedPassword(), user.getPassword());
     }
 
     @Test
