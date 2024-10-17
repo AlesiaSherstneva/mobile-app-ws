@@ -142,6 +142,12 @@ class UserServiceImplTest {
     }
 
     @Test
+    void loadUserByUsernameWhenUserDoesNotExistInDb() {
+        assertThrows(UsernameNotFoundException.class,
+                () -> userService.loadUserByUsername("test@test.com"));
+    }
+
+    @Test
     void loadUserByUsername() {
         when(userRepository.findUserEntityByEmail(anyString())).thenReturn(userEntity);
 
