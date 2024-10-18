@@ -178,6 +178,15 @@ class UserServiceImplTest {
 
     @Test
     void getUserByUserId() {
+        when(userRepository.findByUserId(anyString())).thenReturn(userEntity);
+
+        UserDto userDto = userService.getUserByUserId("someRandomUserId123");
+
+        assertEquals(userDto.getFirstName(), userEntity.getFirstName());
+        assertEquals(userDto.getLastName(), userEntity.getLastName());
+        assertEquals(userDto.getEmail(), userEntity.getEmail());
+        assertEquals(userDto.getUserId(), userEntity.getUserId());
+        assertEquals(userDto.getEncryptedPassword(), userEntity.getEncryptedPassword());
     }
 
     @Test
