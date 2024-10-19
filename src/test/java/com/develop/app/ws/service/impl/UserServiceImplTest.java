@@ -15,6 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -182,6 +185,7 @@ class UserServiceImplTest {
 
         UserDto userDto = userService.getUserByUserId("someRandomUserId123");
 
+        assertNotNull(userDto);
         assertEquals(userDto.getFirstName(), userEntity.getFirstName());
         assertEquals(userDto.getLastName(), userEntity.getLastName());
         assertEquals(userDto.getEmail(), userEntity.getEmail());
@@ -190,7 +194,29 @@ class UserServiceImplTest {
     }
 
     @Test
+    void getUserByUserIdWhenUserNotFoundInDbTest() {
+        when(userRepository.findByUserId(anyString())).thenReturn(null);
+
+        assertThrows(UsernameNotFoundException.class,
+                () -> userService.getUser("test@test.com")
+        );
+    }
+
+    @Test
     void getUsers() {
+        Page<UserEntity> pageResult = new PageImpl<>(List.of(userEntity));
+
+        when(userRepository.findAll(any(PageRequest.class))).thenReturn(pageResult);
+
+        List<UserDto> userDtos = userService.getUsers(1, 1);
+
+        assertEquals(1, userDtos.size());
+
+        UserDto userDto = userDtos.get(0);
+
+        assertNotNull(userDto);
+        assertEquals(userDto.getFirstName(), userEntity.getFirstName());
+        assertEquals(userDto.getLastName(), userEntity.getLastName());
     }
 
     @Test
