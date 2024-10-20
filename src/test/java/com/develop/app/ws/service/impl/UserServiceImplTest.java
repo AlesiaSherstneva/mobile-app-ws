@@ -217,6 +217,9 @@ class UserServiceImplTest {
         assertNotNull(userDto);
         assertEquals(userDto.getFirstName(), userEntity.getFirstName());
         assertEquals(userDto.getLastName(), userEntity.getLastName());
+        assertEquals(userDto.getEmail(), userEntity.getEmail());
+        assertEquals(userDto.getUserId(), userEntity.getUserId());
+        assertEquals(userDto.getEncryptedPassword(), userEntity.getEncryptedPassword());
     }
 
     @Test
